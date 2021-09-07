@@ -1,0 +1,6 @@
+flask_sqlalchemy
+flask_login
+pillow
+flask_wtf
+flask_bcrypt
+email_validator
