@@ -3,5 +3,7 @@
     <h1>{{ post.title }}</h1>
     <p>By {{ post.author.username }} on {{ post.date_posted.strftime("%m/%d/%Y") }}</p>
     <br>
-    <p>{{ post.content }}</p>
+    {% for line in content %}
+        <p>{{ line }}</p>
+    {% endfor %}
 {% endblock %}

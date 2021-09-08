@@ -86,7 +86,6 @@ def account():
 def make_post():
     form = MakePost()
     if form.validate_on_submit():
-        print(form.content.data)
         post = Post(title=form.title.data, date_posted=form.date_posted.data or datetime.datetime.utcnow(), content=form.content.data, user_id=current_user.get_id())
         db.session.add(post)
         db.session.commit()
@@ -98,5 +97,5 @@ def make_post():
 def post(num):
     for post in Post.query.all():
         if post.id == int(num):
-            return render_template("post.html", title=post.title, post=post)
+            return render_template("post.html", title=post.title, post=post, content=post.content.split("\n"))
     return "<h1>Post not found.</h1>"
