@@ -49,7 +49,7 @@ class UpdateAccountForm(FlaskForm):
 
 class MakePost(FlaskForm):
     title = StringField("Title", validators=[DataRequired(), Length(min=5, max=100)])
-    date_posted = DateField("Date Posted", validators=[Optional()])
+    date_posted = DateField("Date Posted", validators=[Optional()], format="%m/%d/%Y")
     content = TextAreaField("Content", validators=[DataRequired(), Length(min=1, max=1000)])
     submit = SubmitField("Make Post")
 

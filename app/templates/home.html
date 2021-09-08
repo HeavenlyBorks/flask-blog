@@ -3,6 +3,10 @@
     {% for post in posts %}
         <h1>{{ post.title }}</h1>
         <p>By {{ post.author.username }} on {{ post.date_posted.strftime("%m/%d/%Y") }}</p>
-        <p>{{ post.content }}</p>
+        {% if post.content|length > 50 %}
+            <p>{{ post.content[:50] + "..." }}</p>
+        {% else %}
+            <p>{{ post.content }}</p>
+        {% endif %}
     {% endfor%}
 {% endblock content %}

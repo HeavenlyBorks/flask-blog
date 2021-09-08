@@ -3,5 +3,5 @@
     <h1>{{ post.title }}</h1>
     <p>By {{ post.author.username }} on {{ post.date_posted.strftime("%m/%d/%Y") }}</p>
     <br>
-    <p>{{ post.content[:50] + "..." }}</p>
+    <p>{{ post.content }}</p>
 {% endblock %}

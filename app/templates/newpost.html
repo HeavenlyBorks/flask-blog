@@ -22,8 +22,19 @@
                 </div>
                 <div class="form-group" id="date_posted">
                     {{ form.date_posted.label(class="form-control-label") }}
-
-                    {{ form.date_posted(class="form-control form-control-lg") }}
+                    <small class="text-muted">
+                        Format: mm/dd/YYYY
+                    </small>
+                    {% if form.date_posted.errors %}
+                        {{ form.date_posted(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date_posted.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_posted(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
                 <div class="form-group" id="content">
                     {{ form.content.label(class="form-control-label") }}

@@ -86,6 +86,7 @@ def account():
 def make_post():
     form = MakePost()
     if form.validate_on_submit():
+        print(form.content.data)
         post = Post(title=form.title.data, date_posted=form.date_posted.data or datetime.datetime.utcnow(), content=form.content.data, user_id=current_user.get_id())
         db.session.add(post)
         db.session.commit()
