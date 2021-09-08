@@ -1,3 +1,4 @@
+import datetime
 import secrets
 import os
 from PIL import Image
@@ -7,27 +8,11 @@ from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, MakePost
 from app.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
-posts = [
-    {
-        'id': 1,
-        'author': 'gamer man',
-        'title': 'blog 1',
-        'content': 'first post woot',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'id': 2,
-        'author': 'book man',
-        'title': 'blog 2',
-        'content': 'second post woot',
-        'date_posted': 'April 21, 2018'
-    }
-]
 
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html", posts=posts)
+    return render_template("home.html", posts=Post.query.all())
 
 @app.route("/about")
 def about():
@@ -101,7 +86,7 @@ def account():
 def make_post():
     form = MakePost()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, date_posted=form.date_posted.data or None, content=form.content.data, user_id=current_user.get_id())
+        post = Post(title=form.title.data, date_posted=form.date_posted.data or datetime.datetime.utcnow(), content=form.content.data, user_id=current_user.get_id())
         db.session.add(post)
         db.session.commit()
         flash("Post made successfully!", "success")

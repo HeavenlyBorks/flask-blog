@@ -1,7 +1,7 @@
 {% extends "Layout.html" %}
 {% block content %}
     <h1>{{ post.title }}</h1>
-    <p>By {{ post.author.username }} on {{ post.date_posted }}</p>
+    <p>By {{ post.author.username }} on {{ post.date_posted.strftime("%m/%d/%Y") }}</p>
     <br>
-    <p>{{ post.content }}</p>
+    <p>{{ post.content[:50] + "..." }}</p>
 {% endblock %}
