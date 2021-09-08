@@ -9,6 +9,10 @@ from app.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
 
+@app.route("/<yas>")
+def notfound(yas):
+    return render_template("404.html", page=yas)
+
 @app.route("/")
 @app.route("/home")
 def home():
