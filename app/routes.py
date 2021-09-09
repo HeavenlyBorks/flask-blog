@@ -104,7 +104,7 @@ def post(num):
         return render_template("post.html", title=post.title, post=post, content=post.content.split("\n"))
     return render_template("404.html", title="404", page=num, type="Post")
 
-@app.route("/posts/<num>/edit", methods=["GET", "POST"])
+@app.route("/posts/<num>/edit", methods=["POST"])
 def edit(num):
     post = Post.query.get(num)
     if post:
@@ -121,3 +121,14 @@ def edit(num):
             form.title.data = post.title
             form.content.data = post.content
         return render_template("newpost.html", title="Update Post", form=form)
+
+@app.route("/posts/<num>/delete", methods=["GET", "POST"])
+def delete(num):
+    post = Post.query.get(num)
+    if post:
+        if post.author != current_user:
+            return render_template("403.html", title="403", page=f"{num}/delete", type="Resource")
+        db.session.delete(post)
+        db.session.commit()
+        flash("Your post has been deleted!", "success")
+        return redirect(url_for("home"))
