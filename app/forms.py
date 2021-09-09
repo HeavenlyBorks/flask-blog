@@ -53,7 +53,7 @@ class MakePost(FlaskForm):
     content = TextAreaField("Content", validators=[DataRequired(), Length(min=1, max=1000)])
     submit = SubmitField("Make Post")
 
-    def validate_title(self, title):
-        title = Post.query.filter_by(title=title.data).first()
-        if title:
-            raise ValidationError("That title has already been used. Please use another one.")
+    # def validate_title(self, title):
+    #     title = Post.query.filter_by(title=title.data).first()
+    #     if title:
+    #         raise ValidationError("That title has already been used. Please use another one.")

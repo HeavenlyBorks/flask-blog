@@ -104,7 +104,7 @@ def post(num):
         return render_template("post.html", title=post.title, post=post, content=post.content.split("\n"))
     return render_template("404.html", title="404", page=num, type="Post")
 
-@app.route("/posts/<num>/edit", methods=["POST"])
+@app.route("/posts/<num>/edit", methods=["GET", "POST"])
 def edit(num):
     post = Post.query.get(num)
     if post:
