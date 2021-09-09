@@ -2,7 +2,7 @@ import datetime
 import secrets
 import os
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import abort, render_template, url_for, flash, redirect, request
 from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm, UpdateAccountForm, MakePost
 from app.models import User, Post
@@ -11,7 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/<yas>")
 def notfound(yas):
-    return render_template("404.html", page=yas)
+    return render_template("404.html", page=yas, title="404", type="Page")
 
 @app.route("/")
 @app.route("/home")
@@ -97,9 +97,27 @@ def make_post():
         return redirect(f"/posts/{post.id}")
     return render_template("newpost.html", title="New Post", form=form)
 
-@app.route(f"/posts/<num>")
+@app.route("/posts/<num>")
 def post(num):
-    for post in Post.query.all():
-        if post.id == int(num):
-            return render_template("post.html", title=post.title, post=post, content=post.content.split("\n"))
-    return "<h1>Post not found.</h1>"
+    post = Post.query.get(num)
+    if post:
+        return render_template("post.html", title=post.title, post=post, content=post.content.split("\n"))
+    return render_template("404.html", title="404", page=num, type="Post")
+
+@app.route("/posts/<num>/edit", methods=["GET", "POST"])
+def edit(num):
+    post = Post.query.get(num)
+    if post:
+        if post.author != current_user:
+            return render_template("403.html", title="403", page=f"{num}/edit", type="Resource")
+        form = MakePost()
+        if form.validate_on_submit():
+            post.title = form.title.data
+            post.content = form.content.data
+            db.session.commit()
+            flash("Your post has been updated!", "success")
+            return redirect(url_for('post', num=post.id))
+        elif request.method == "GET":
+            form.title.data = post.title
+            form.content.data = post.content
+        return render_template("newpost.html", title="Update Post", form=form)
